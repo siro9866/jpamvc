@@ -1,0 +1,23 @@
+spring:
+  profiles.active: local  # run configuration 에서 local주입해서 사용
+
+  messages:
+    basename: messages/message,messages/validation
+    encoding: UTF-8
+
+  mustache:
+    servlet:
+      expose-request-attributes: true # CSRF 값 내려주기
+
+
+server:
+  servlet:
+    encoding:
+      force-response: true  # mustach 한글깨짐 등
+
+custom:
+  format:
+    date: yyyy-MM-dd
+    dateStr: yyyyMMdd
+    datetime: yyyy-MM-dd HH:mm:ss.SS
+    datetimeStr: yyyyMMddHHmmss
