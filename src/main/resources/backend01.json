@@ -1,0 +1,1007 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "backend01의 API",
+    "description": "2025-01-01 데모",
+    "version": "0.0.0.0.0.0.0.1"
+  },
+  "servers": [
+    {
+      "url": "https://azure1-g3geewbybwc3bdff.koreacentral-01.azurewebsites.net",
+      "description": "서버 도매인"
+    }
+  ],
+  "security": [
+    {
+      "JWT": [
+        
+      ]
+    }
+  ],
+  "tags": [
+    {
+      "name": "회원",
+      "description": "회원 API"
+    },
+    {
+      "name": "게시판",
+      "description": "게시판 API"
+    },
+    {
+      "name": "토큰컨트롤러",
+      "description": "토큰컨트롤러"
+    }
+  ],
+  "paths": {
+    "/sample/board": {
+      "get": {
+        "tags": [
+          "게시판"
+        ],
+        "summary": "게시판 리스트",
+        "description": "게시판 리스트",
+        "operationId": "boardList",
+        "parameters": [
+          {
+            "name": "zboardSearchDto",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/ZboardSearchDto"
+            }
+          },
+          {
+            "name": "pageable",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Pageable"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json;charset=UTF-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResponsePageZboardResponseDto"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "게시판"
+        ],
+        "summary": "게시판 등록",
+        "description": "게시판을 등록한다",
+        "operationId": "boardCreate",
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "required": [
+                  "zboardCreateDto"
+                ],
+                "type": "object",
+                "properties": {
+                  "zboardCreateDto": {
+                    "$ref": "#/components/schemas/ZboardCreateDto"
+                  },
+                  "files": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "format": "binary"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json;charset=UTF-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResponseZboardResponseDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/sample/board/comments/": {
+      "get": {
+        "tags": [
+          "게시판"
+        ],
+        "summary": "댓글 리스트",
+        "description": "댓글 리스트",
+        "operationId": "commentsList",
+        "parameters": [
+          {
+            "name": "boardSeq",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "pageable",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Pageable"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json;charset=UTF-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResponsePageZcommentsResponseDto"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "게시판"
+        ],
+        "summary": "댓글 등록",
+        "description": "댓글을 등록한다",
+        "operationId": "commentsCreate",
+        "requestBody": {
+          "content": {
+            "application/json;charset=UTF-8": {
+              "schema": {
+                "$ref": "#/components/schemas/ZcommentsCreateDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json;charset=UTF-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResponseZcommentsResponseDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/reIssue": {
+      "post": {
+        "tags": [
+          "토큰컨트롤러"
+        ],
+        "summary": "토큰 재발급",
+        "description": "토큰 재발급",
+        "operationId": "reissue",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json;charset=UTF-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResponseObject"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/sample/board/{boardSeq}": {
+      "get": {
+        "tags": [
+          "게시판"
+        ],
+        "summary": "게시판 상세",
+        "description": "게시판 상세",
+        "operationId": "boardDetail",
+        "parameters": [
+          {
+            "name": "boardSeq",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json;charset=UTF-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResponseZboardResponseDto"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "게시판"
+        ],
+        "summary": "게시판 삭제",
+        "description": "게시판을 삭제한다",
+        "operationId": "boardCreate_1",
+        "parameters": [
+          {
+            "name": "boardSeq",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json;charset=UTF-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResponseZboardResponseDto"
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "게시판"
+        ],
+        "summary": "게시판 수정",
+        "description": "게시판을 수정한다",
+        "operationId": "boardModify",
+        "parameters": [
+          {
+            "name": "boardSeq",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "required": [
+                  "zboardModifyDto"
+                ],
+                "type": "object",
+                "properties": {
+                  "zboardModifyDto": {
+                    "$ref": "#/components/schemas/ZboardModifyDto"
+                  },
+                  "files": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "format": "binary"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json;charset=UTF-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResponseZboardResponseDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/sample/board/comments/{commentsSeq}": {
+      "delete": {
+        "tags": [
+          "게시판"
+        ],
+        "summary": "댓글 삭제",
+        "description": "댓글을 삭제한다",
+        "operationId": "scommentsCreate",
+        "parameters": [
+          {
+            "name": "commentsSeq",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json;charset=UTF-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResponseZcommentsResponseDto"
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "게시판"
+        ],
+        "summary": "댓글 수정",
+        "description": "댓글을 수정한다",
+        "operationId": "scommentsModify",
+        "parameters": [
+          {
+            "name": "commentsSeq",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json;charset=UTF-8": {
+              "schema": {
+                "$ref": "#/components/schemas/ZcommentsModifyDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json;charset=UTF-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResponseZcommentsResponseDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/sample/board2": {
+      "get": {
+        "tags": [
+          "게시판"
+        ],
+        "summary": "게시판 리스트(Mybatis)",
+        "description": "게시판 리스트",
+        "operationId": "boardList_1",
+        "parameters": [
+          {
+            "name": "zboardSearchDto",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/ZboardSearchDto"
+            }
+          },
+          {
+            "name": "pageable",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Pageable"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json;charset=UTF-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResponseListZboardResponseDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/member/{memberSeq}": {
+      "get": {
+        "tags": [
+          "회원"
+        ],
+        "summary": "회원상세",
+        "description": "회원상세",
+        "operationId": "memberDetail",
+        "parameters": [
+          {
+            "name": "memberSeq",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json;charset=UTF-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResponseMemberResponseDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/login": {
+      "post": {
+        "tags": [
+          "로그인"
+        ],
+        "summary": "로그인",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "memberId": {
+                    "type": "string",
+                    "default": "sil1"
+                  },
+                  "password": {
+                    "type": "string",
+                    "default": "1234"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "example": "{\"token\":\"sample-jwt-token\"}"
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "example": "{\"error\":\"UNAUTHORIZED\"}"
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "ZboardCreateDto": {
+        "required": [
+          "boardContents",
+          "boardTitle"
+        ],
+        "type": "object",
+        "properties": {
+          "boardTitle": {
+            "maxLength": 200,
+            "minLength": 1,
+            "type": "string"
+          },
+          "boardContents": {
+            "type": "string"
+          },
+          "priorityYn": {
+            "type": "string"
+          }
+        }
+      },
+      "ApiResponseZboardResponseDto": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/ZboardResponseDto"
+          }
+        }
+      },
+      "ZboardResponseDto": {
+        "type": "object",
+        "properties": {
+          "boardSeq": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "boardTitle": {
+            "type": "string"
+          },
+          "boardContents": {
+            "type": "string"
+          },
+          "viewCount": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "priorityYn": {
+            "type": "string"
+          },
+          "deletedYn": {
+            "type": "string"
+          },
+          "createdBy": {
+            "type": "string"
+          },
+          "createdDttm": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "modifiedBy": {
+            "type": "string"
+          },
+          "modifiedDttm": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "commentCount": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "fileCount": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "files": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ZfileResponseDto"
+            }
+          }
+        }
+      },
+      "ZfileResponseDto": {
+        "type": "object",
+        "properties": {
+          "fileSeq": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "boardSeq": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "uploadPath": {
+            "type": "string"
+          },
+          "orgFileName": {
+            "type": "string"
+          },
+          "sysFileName": {
+            "type": "string"
+          },
+          "createdBy": {
+            "type": "string"
+          },
+          "createdDttm": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "modifiedBy": {
+            "type": "string"
+          },
+          "modifiedDttm": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "ZcommentsCreateDto": {
+        "required": [
+          "comments"
+        ],
+        "type": "object",
+        "properties": {
+          "boardSeq": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "parentsCommentsSeq": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "comments": {
+            "type": "string"
+          }
+        }
+      },
+      "ApiResponseZcommentsResponseDto": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/ZcommentsResponseDto"
+          }
+        }
+      },
+      "ZcommentsResponseDto": {
+        "type": "object",
+        "properties": {
+          "commentsSeq": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "parentsCommentsSeq": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "boardSeq": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "comments": {
+            "type": "string"
+          },
+          "deletedYn": {
+            "type": "string"
+          },
+          "createdBy": {
+            "type": "string"
+          },
+          "createdDttm": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "modifiedBy": {
+            "type": "string"
+          },
+          "modifiedDttm": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "reComments": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ZcommentsResponseDto"
+            }
+          }
+        }
+      },
+      "ApiResponseObject": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object"
+          }
+        }
+      },
+      "ZboardModifyDto": {
+        "required": [
+          "boardContents",
+          "boardTitle"
+        ],
+        "type": "object",
+        "properties": {
+          "boardTitle": {
+            "maxLength": 200,
+            "minLength": 1,
+            "type": "string"
+          },
+          "boardContents": {
+            "type": "string"
+          },
+          "priorityYn": {
+            "type": "string"
+          },
+          "fileSeqs": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        }
+      },
+      "ZcommentsModifyDto": {
+        "required": [
+          "comments"
+        ],
+        "type": "object",
+        "properties": {
+          "comments": {
+            "type": "string"
+          }
+        }
+      },
+      "ZboardSearchDto": {
+        "type": "object",
+        "properties": {
+          "searchValue": {
+            "type": "string"
+          },
+          "startDate": {
+            "type": "string",
+            "format": "date"
+          },
+          "endDate": {
+            "type": "string",
+            "format": "date"
+          }
+        }
+      },
+      "Pageable": {
+        "type": "object",
+        "properties": {
+          "page": {
+            "minimum": 0,
+            "type": "integer",
+            "format": "int32"
+          },
+          "size": {
+            "minimum": 1,
+            "type": "integer",
+            "format": "int32"
+          },
+          "sort": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "ApiResponsePageZboardResponseDto": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/PageZboardResponseDto"
+          }
+        }
+      },
+      "PageZboardResponseDto": {
+        "type": "object",
+        "properties": {
+          "totalPages": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "totalElements": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "size": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "content": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ZboardResponseDto"
+            }
+          },
+          "number": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "sort": {
+            "$ref": "#/components/schemas/SortObject"
+          },
+          "numberOfElements": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "pageable": {
+            "$ref": "#/components/schemas/PageableObject"
+          },
+          "first": {
+            "type": "boolean"
+          },
+          "last": {
+            "type": "boolean"
+          },
+          "empty": {
+            "type": "boolean"
+          }
+        }
+      },
+      "PageableObject": {
+        "type": "object",
+        "properties": {
+          "offset": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "sort": {
+            "$ref": "#/components/schemas/SortObject"
+          },
+          "pageSize": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "paged": {
+            "type": "boolean"
+          },
+          "pageNumber": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "unpaged": {
+            "type": "boolean"
+          }
+        }
+      },
+      "SortObject": {
+        "type": "object",
+        "properties": {
+          "empty": {
+            "type": "boolean"
+          },
+          "sorted": {
+            "type": "boolean"
+          },
+          "unsorted": {
+            "type": "boolean"
+          }
+        }
+      },
+      "ApiResponseListZboardResponseDto": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ZboardResponseDto"
+            }
+          }
+        }
+      },
+      "ApiResponsePageZcommentsResponseDto": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/PageZcommentsResponseDto"
+          }
+        }
+      },
+      "PageZcommentsResponseDto": {
+        "type": "object",
+        "properties": {
+          "totalPages": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "totalElements": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "size": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "content": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ZcommentsResponseDto"
+            }
+          },
+          "number": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "sort": {
+            "$ref": "#/components/schemas/SortObject"
+          },
+          "numberOfElements": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "pageable": {
+            "$ref": "#/components/schemas/PageableObject"
+          },
+          "first": {
+            "type": "boolean"
+          },
+          "last": {
+            "type": "boolean"
+          },
+          "empty": {
+            "type": "boolean"
+          }
+        }
+      },
+      "ApiResponseMemberResponseDto": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/MemberResponseDto"
+          }
+        }
+      },
+      "MemberResponseDto": {
+        "type": "object",
+        "properties": {
+          "memberSeq": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "memberId": {
+            "type": "string"
+          },
+          "memberEmail": {
+            "type": "string"
+          },
+          "memberName": {
+            "type": "string"
+          },
+          "joinDttm": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "signDttm": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "createDttm": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "modifyDttm": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "JWT": {
+        "type": "apiKey",
+        "name": "accessToken",
+        "in": "header"
+      }
+    }
+  }
+}
